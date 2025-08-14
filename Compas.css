@@ -96,7 +96,7 @@ h2 {
 .preset-buttons {
     display: flex;
     flex-wrap: wrap;
-    gap: 10px;
+    gap: 10px 15px;
     margin-bottom: 20px;
     padding-bottom: 20px;
     border-bottom: 1px solid #eee;
@@ -117,9 +117,9 @@ h2 {
 
 /* 重複選択オプションのチェックボックス */
 .option-checkbox {
-    margin-left: auto;
     font-size: 0.9em;
     cursor: pointer;
+    white-space: nowrap;
 }
 
 /* 人数選択セクションのスタイル */
