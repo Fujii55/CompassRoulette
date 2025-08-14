@@ -1,0 +1,167 @@
+/* 基本スタイル */
+body {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+    text-align: center;
+    background-color: #f4f4f9;
+    color: #333;
+    margin: 0;
+    padding: 20px;
+}
+
+.container {
+    max-width: 900px;
+    margin: 0 auto;
+    background-color: #fff;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+}
+
+h1 {
+    color: #4a4a4a;
+}
+
+h2 {
+    color: #5a5a5a;
+    border-bottom: 2px solid #eee;
+    padding-bottom: 10px;
+    margin-top: 0;
+}
+
+/* 絞り込みセクション */
+.filter-section {
+    margin: 20px 0;
+    padding: 20px;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    text-align: left;
+}
+
+.filter-options {
+    margin-bottom: 20px;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 15px;
+}
+
+.filter-options label {
+    cursor: pointer;
+    font-weight: bold;
+}
+
+/* ヒーローのグリッド表示 */
+.hero-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+    gap: 10px;
+}
+.hero-grid label {
+    display: flex;
+    align-items: center;
+    padding: 5px;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.2s;
+}
+.hero-grid label:hover {
+    background-color: #f0f0f0;
+}
+.hero-grid input[type="checkbox"] {
+    margin-right: 8px;
+}
+
+/* カードカテゴリのグリッド表示 */
+.card-category-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+    gap: 10px;
+}
+.card-category-grid label {
+    display: flex;
+    align-items: center;
+    font-size: 0.9em;
+    padding: 5px;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.2s;
+}
+.card-category-grid label:hover {
+    background-color: #f0f0f0;
+}
+.card-category-grid input[type="checkbox"] {
+    margin-right: 8px;
+}
+
+/* プリセットボタンのスタイル */
+.preset-buttons {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-bottom: 20px;
+    padding-bottom: 20px;
+    border-bottom: 1px solid #eee;
+}
+.preset-buttons button {
+    padding: 8px 12px;
+    font-size: 0.9em;
+    border: 1px solid #ccc;
+    background-color: #f7f7f7;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.2s;
+}
+.preset-buttons button:hover {
+    background-color: #e9e9e9;
+}
+
+
+/* 実行ボタン */
+#startButton {
+    display: block;
+    width: 100%;
+    padding: 18px 30px;
+    font-size: 1.5em;
+    font-weight: bold;
+    color: #fff;
+    background: linear-gradient(45deg, #ff7e5f, #feb47b);
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: transform 0.1s, box-shadow 0.2s;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+    margin: 30px 0;
+}
+#startButton:hover {
+    box-shadow: 0 6px 12px rgba(0,0,0,0.15);
+}
+#startButton:active {
+    transform: scale(0.98);
+}
+
+/* 結果表示エリア */
+.result-section {
+    margin-top: 20px;
+    padding: 20px;
+    background-color: #f9f9f9;
+    border: 1px solid #eee;
+    border-radius: 8px;
+}
+#heroResult h3 {
+    font-size: 2em;
+    color: #e63946;
+    margin: 0 0 10px 0;
+}
+#cardResult {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 15px;
+    margin-top: 15px;
+}
+#cardResult p {
+    background-color: #fff;
+    padding: 10px;
+    border-radius: 5px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+    margin: 0;
+    font-weight: 500;
+}

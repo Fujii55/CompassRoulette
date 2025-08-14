@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>#コンパス ランダムルーレット</title>
+    <link rel="stylesheet" href="Compas.css">
+</head>
+<body>
+
+    <div class="container">
+        <h1>#コンパス ランダムルーレット</h1>
+
+        <div class="filter-section">
+            <h2>ヒーロー絞り込み</h2>
+
+            <div class="preset-buttons">
+                <button id="selectAllHeroesBtn">全て選択</button>
+                <button id="deselectAllHeroesBtn">全て解除</button>
+            </div>
+            <div class="filter-options">
+                <label><input type="checkbox" class="role-filter" value="アタッカー" checked> アタッカー</label>
+                <label><input type="checkbox" class="role-filter" value="ガンナー" checked> ガンナー</label>
+                <label><input type="checkbox" class="role-filter" value="タンク" checked> タンク</label>
+                <label><input type="checkbox" class="role-filter" value="スプリンター" checked> スプリンター</label>
+            </div>
+            <div id="hero-selection" class="hero-grid">
+                </div>
+        </div>
+
+        <div class="filter-section">
+            <h2>カードカテゴリ絞り込み</h2>
+            
+            <div class="preset-buttons">
+                <button id="selectAllCardsBtn">全て選択</button>
+                <button id="deselectAllCardsBtn">全て解除</button>
+                <button id="selectUrOnlyBtn">URのみ</button>
+                <button id="selectSrOnlyBtn">SRのみ</button>
+            </div>
+
+            <div id="card-selection" class="card-category-grid">
+                </div>
+        </div>
+
+
+        <button id="startButton">ルーレットを回す！</button>
+
+        <div id="result" class="result-section">
+            <div id="heroResult">
+                <p>ここにヒーローが表示されます</p>
+            </div>
+            <hr>
+            <div id="cardResult">
+                <p>ここにカードが表示されます</p>
+            </div>
+        </div>
+    </div>
+
+    <script src="Compas.js"></script>
+</body>
+</html>
