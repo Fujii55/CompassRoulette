@@ -13,26 +13,19 @@
 
         <div class="filter-section">
             <h2>ヒーロー絞り込み</h2>
-
             <div class="preset-buttons">
                 <button id="selectAllHeroesBtn">全て選択</button>
                 <button id="deselectAllHeroesBtn">全て解除</button>
-                <label class="option-checkbox">
-                    <input type="checkbox" id="uniqueHeroesCheckbox" checked> ヒーロー重複なし
-                </label>
-                <label class="option-checkbox">
-                    <input type="checkbox" id="uniqueRolesCheckbox" checked> ロール重複なし
-                </label>
+                <label class="option-checkbox"><input type="checkbox" id="uniqueHeroesCheckbox" checked> ヒーロー重複なし</label>
+                <label class="option-checkbox"><input type="checkbox" id="uniqueRolesCheckbox" checked> ロール重複なし</label>
             </div>
-            
             <div class="filter-options">
                 <label><input type="checkbox" class="role-filter" value="アタッカー" checked> アタッカー</label>
                 <label><input type="checkbox" class="role-filter" value="ガンナー" checked> ガンナー</label>
                 <label><input type="checkbox" class="role-filter" value="タンク" checked> タンク</label>
                 <label><input type="checkbox" class="role-filter" value="スプリンター" checked> スプリンター</label>
             </div>
-            <div id="hero-selection" class="hero-grid">
-                </div>
+            <div id="hero-selection" class="hero-grid"></div>
         </div>
 
         <div class="filter-section">
@@ -43,8 +36,7 @@
                 <button id="selectUrOnlyBtn">URのみ</button>
                 <button id="selectSrOnlyBtn">SRのみ</button>
             </div>
-            <div id="card-selection" class="card-category-grid">
-                </div>
+            <div id="card-selection" class="card-category-grid"></div>
         </div>
 
         <div class="player-count-section">
@@ -52,17 +44,23 @@
             <select id="playerCount">
                 <option value="1">1人</option>
                 <option value="2">2人</option>
-                <option value="3" selected>3人</option>
-                <option value="4">4人</option>
+                <option value="3">3人</option>
+                <option value="4" selected>4人</option>
                 <option value="5">5人</option>
                 <option value="6">6人</option>
             </select>
+            <label class="option-checkbox team-split-option">
+                <input type="checkbox" id="enableTeamSplitCheckbox" checked> チーム分けをする
+            </label>
         </div>
 
         <button id="startButton">ルーレットを回す！</button>
 
-        <div id="result">
-            </div>
+        <div id="result-wrapper">
+            <div id="red-team-result" class="team-result-container"></div>
+            <div id="blue-team-result" class="team-result-container"></div>
+            <div id="no-team-result" class="no-team-result-container"></div>
+        </div>
     </div>
 
     <script src="Compas.js"></script>
