@@ -111,29 +111,160 @@ document.addEventListener('DOMContentLoaded', () => {
         'SR自由枠',
     ];
 
-    // ========== HTML要素の取得 ==========
+   // ========== HTML要素の取得 ==========
     const startButton = document.getElementById('startButton');
-    const resultDiv = document.getElementById('result');
+    const resultWrapper = document.getElementById('result-wrapper');
+    const redTeamResultDiv = document.getElementById('red-team-result');
+    const blueTeamResultDiv = document.getElementById('blue-team-result');
+    const noTeamResultDiv = document.getElementById('no-team-result');
+    const playerCountSelect = document.getElementById('playerCount');
+    const enableTeamSplitCheckbox = document.getElementById('enableTeamSplitCheckbox');
+    const uniqueHeroesCheckbox = document.getElementById('uniqueHeroesCheckbox');
+    const uniqueRolesCheckbox = document.getElementById('uniqueRolesCheckbox');
     const heroSelectionDiv = document.getElementById('hero-selection');
     const roleFilters = document.querySelectorAll('.role-filter');
     const cardSelectionDiv = document.getElementById('card-selection');
-    const playerCountSelect = document.getElementById('playerCount');
-    const uniqueHeroesCheckbox = document.getElementById('uniqueHeroesCheckbox');
-    const uniqueRolesCheckbox = document.getElementById('uniqueRolesCheckbox');
-    
-    // ヒーロープリセットボタン
     const selectAllHeroesBtn = document.getElementById('selectAllHeroesBtn');
     const deselectAllHeroesBtn = document.getElementById('deselectAllHeroesBtn');
-    
-    // カードプリセットボタン
     const selectAllCardsBtn = document.getElementById('selectAllCardsBtn');
     const deselectAllCardsBtn = document.getElementById('deselectAllCardsBtn');
     const selectUrOnlyBtn = document.getElementById('selectUrOnlyBtn');
     const selectSrOnlyBtn = document.getElementById('selectSrOnlyBtn');
 
-    // ========== 機能の実装 ==========
+    // ========== ヒーロー選出の補助関数 ==========
+    function selectHeroesForTeam(teamSize, heroPool, isUniqueHeroes, isUniqueRoles) {
+        if (isUniqueRoles) {
+            const heroesByRole = {};
+            heroPool.forEach(hero => {
+                if (!heroesByRole[hero.role]) heroesByRole[hero.role] = [];
+                heroesByRole[hero.role].push(hero.name);
+            });
+            const availableRoles = Object.keys(heroesByRole);
+            if (availableRoles.length < teamSize) return null; // ロール不足
 
-    // ヒーロー選択チェックボックスを動的に生成
+            const shuffledRoles = [...availableRoles].sort(() => 0.5 - Math.random());
+            const selectedHeroes = [];
+            for (let i = 0; i < teamSize; i++) {
+                const role = shuffledRoles[i];
+                const heroesInRole = heroesByRole[role];
+                const randomIndex = Math.floor(Math.random() * heroesInRole.length);
+                selectedHeroes.push(heroesInRole[randomIndex]);
+            }
+            return selectedHeroes;
+
+        } else if (isUniqueHeroes) {
+            if (heroPool.length < teamSize) return null; // ヒーロー不足
+            const shuffledHeroes = [...heroPool.map(h => h.name)].sort(() => 0.5 - Math.random());
+            return shuffledHeroes.slice(0, teamSize);
+
+        } else {
+            const selectedHeroes = [];
+            const heroNames = heroPool.map(h => h.name);
+            if (heroNames.length === 0) return null;
+            for (let i = 0; i < teamSize; i++) {
+                const randomIndex = Math.floor(Math.random() * heroNames.length);
+                selectedHeroes.push(heroNames[randomIndex]);
+            }
+            return selectedHeroes;
+        }
+    }
+
+    // ========== ルーレット実行 ==========
+    function runRoulette() {
+        // --- ユーザー設定を取得 ---
+        const playerCount = parseInt(playerCountSelect.value, 10);
+        const isTeamSplitEnabled = enableTeamSplitCheckbox.checked;
+        const isUniqueHeroes = uniqueHeroesCheckbox.checked;
+        const isUniqueRoles = uniqueRolesCheckbox.checked;
+
+        // --- 絞り込まれたリストを作成 ---
+        const availableHeroObjects = allHeroes.filter(hero => {
+            const checkbox = document.getElementById(`hero-${hero.name}`);
+            return checkbox && checkbox.checked && checkbox.closest('label').style.display !== 'none';
+        });
+        const availableCards = Array.from(document.querySelectorAll('.card-checkbox:checked')).map(cb => cb.value);
+
+        if (availableCards.length === 0) {
+            alert('カードカテゴリを1つ以上選択してください！');
+            return;
+        }
+
+        // --- 結果表示エリアを初期化 ---
+        redTeamResultDiv.innerHTML = '';
+        blueTeamResultDiv.innerHTML = '';
+        noTeamResultDiv.innerHTML = '';
+
+        // ===== チーム分けする場合 =====
+        if (isTeamSplitEnabled && playerCount >= 4) {
+            let redCount, blueCount;
+            if (playerCount === 4) { redCount = 2; blueCount = 2; }
+            else if (playerCount === 5) { [redCount, blueCount] = Math.random() < 0.5 ? [3, 2] : [2, 3]; }
+            else if (playerCount === 6) { redCount = 3; blueCount = 3; }
+
+            let redHeroes = selectHeroesForTeam(redCount, availableHeroObjects, isUniqueHeroes, isUniqueRoles);
+            if (!redHeroes) {
+                alert('赤チームのヒーロー選出条件が厳しすぎます！絞り込みを緩めてください。');
+                return;
+            }
+
+            let remainingHeroes = availableHeroObjects;
+            if (isUniqueHeroes) {
+                remainingHeroes = availableHeroObjects.filter(hero => !redHeroes.includes(hero.name));
+            }
+            
+            let blueHeroes = selectHeroesForTeam(blueCount, remainingHeroes, isUniqueHeroes, isUniqueRoles);
+            if (!blueHeroes) {
+                alert('青チームのヒーロー選出条件が厳しすぎます！絞り込みを緩めてください。');
+                return;
+            }
+
+            redTeamResultDiv.innerHTML = '<h2>赤チーム</h2>';
+            blueTeamResultDiv.innerHTML = '<h2>青チーム</h2>';
+
+            [redHeroes, blueHeroes].forEach((teamHeroes, index) => {
+                const teamDiv = (index === 0) ? redTeamResultDiv : blueTeamResultDiv;
+                teamHeroes.forEach((hero, playerIndex) => {
+                    const selectedCards = [];
+                    for (let j = 0; j < 4; j++) {
+                        const randomIndex = Math.floor(Math.random() * availableCards.length);
+                        selectedCards.push(availableCards[randomIndex]);
+                    }
+                    const personResultHTML = `
+                        <div class="person-result">
+                            <h3>Player ${playerIndex + 1}</h3>
+                            <div class="hero-name">${hero}</div>
+                            ${selectedCards.map(card => `<p>${card}</p>`).join('')}
+                        </div>`;
+                    teamDiv.innerHTML += personResultHTML;
+                });
+            });
+
+        } else {
+            // ===== チーム分けしない場合 =====
+            const selectedHeroes = selectHeroesForTeam(playerCount, availableHeroObjects, isUniqueHeroes, isUniqueRoles);
+            if (!selectedHeroes) {
+                alert('ヒーロー選出条件が厳しすぎます！絞り込みを緩めてください。');
+                return;
+            }
+
+            selectedHeroes.forEach((hero, i) => {
+                const selectedCards = [];
+                for (let j = 0; j < 4; j++) {
+                    const randomIndex = Math.floor(Math.random() * availableCards.length);
+                    selectedCards.push(availableCards[randomIndex]);
+                }
+                const personResultHTML = `
+                    <div class="person-result">
+                        <h3>Player ${i + 1}</h3>
+                        <div class="hero-name">${hero}</div>
+                        ${selectedCards.map(card => `<p>${card}</p>`).join('')}
+                    </div>`;
+                noTeamResultDiv.innerHTML += personResultHTML;
+            });
+        }
+    }
+
+    // ========== チェックボックス生成 ==========
     function generateHeroCheckboxes() {
         heroSelectionDiv.innerHTML = '';
         allHeroes.forEach(hero => {
@@ -146,7 +277,6 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
-    // カードカテゴリ選択チェックボックスを動的に生成
     function generateCardCheckboxes() {
         cardSelectionDiv.innerHTML = '';
         allCards.forEach(cardCategory => {
@@ -158,12 +288,9 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
-    // ロール絞り込みが変更された時の処理
+    // ========== イベントリスナーと初期化処理 ==========
     function updateHeroVisibility() {
-        const selectedRoles = Array.from(roleFilters)
-            .filter(i => i.checked)
-            .map(i => i.value);
-
+        const selectedRoles = Array.from(roleFilters).filter(i => i.checked).map(i => i.value);
         heroSelectionDiv.querySelectorAll('label').forEach(label => {
             if (selectedRoles.includes(label.dataset.role)) {
                 label.style.display = 'flex';
@@ -173,119 +300,16 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
     
-    // ルーレットを実行するメインの関数
-    function runRoulette() {
-        // --- ユーザー設定を取得 ---
-        const playerCount = parseInt(playerCountSelect.value, 10);
-        const isUniqueHeroes = uniqueHeroesCheckbox.checked;
-        const isUniqueRoles = uniqueRolesCheckbox.checked;
-
-        // --- 絞り込まれたヒーローとカードのリストを作成 ---
-        const availableHeroObjects = allHeroes.filter(hero => {
-            const checkbox = document.getElementById(`hero-${hero.name}`);
-            return checkbox && checkbox.checked && checkbox.closest('label').style.display !== 'none';
-        });
-        const availableCards = Array.from(document.querySelectorAll('.card-checkbox:checked')).map(cb => cb.value);
-
-        // --- 事前チェック ---
-        if (availableHeroObjects.length === 0) {
-            alert('対象のヒーローがいません！');
-            return;
-        }
-        if (availableCards.length === 0) {
-            alert('カードカテゴリを1つ以上選択してください！');
-            return;
-        }
-
-        // --- ヒーロー選出ロジック ---
-        let selectedHeroes = [];
-
-        if (isUniqueRoles) {
-            // 【ロール重複なしの場合】
-            const heroesByRole = {};
-            availableHeroObjects.forEach(hero => {
-                if (!heroesByRole[hero.role]) {
-                    heroesByRole[hero.role] = [];
-                }
-                heroesByRole[hero.role].push(hero.name);
-            });
-
-            const availableRoles = Object.keys(heroesByRole);
-            if (availableRoles.length < playerCount) {
-                alert(`選択されたヒーローのロールが${playerCount}種類未満です！\nロールの重複を許可するか、選択範囲を広げてください。`);
-                return;
-            }
-
-            const shuffledRoles = [...availableRoles].sort(() => 0.5 - Math.random());
-            for (let i = 0; i < playerCount; i++) {
-                const role = shuffledRoles[i];
-                const heroesInRole = heroesByRole[role];
-                const randomIndex = Math.floor(Math.random() * heroesInRole.length);
-                selectedHeroes.push(heroesInRole[randomIndex]);
-            }
-
-        } else if (isUniqueHeroes) {
-            // 【ヒーロー重複なしの場合（ロールは重複OK）】
-            const availableHeroNames = availableHeroObjects.map(h => h.name);
-            if (availableHeroNames.length < playerCount) {
-                alert(`選択されたヒーローが${playerCount}人未満です！\nヒーローの重複を許可するか、選択範囲を広げてください。`);
-                return;
-            }
-            const shuffledHeroes = [...availableHeroNames].sort(() => 0.5 - Math.random());
-            selectedHeroes = shuffledHeroes.slice(0, playerCount);
-
-        } else {
-            // 【ヒーローもロールも重複OKの場合】
-            const availableHeroNames = availableHeroObjects.map(h => h.name);
-            for (let i = 0; i < playerCount; i++) {
-                const randomIndex = Math.floor(Math.random() * availableHeroNames.length);
-                selectedHeroes.push(availableHeroNames[randomIndex]);
-            }
-        }
-
-        // --- 結果表示 ---
-        resultDiv.innerHTML = '';
-
-        for (let i = 0; i < playerCount; i++) {
-            const selectedHero = selectedHeroes[i];
-
-            // カードカテゴリを重複ありでランダムに4つ選出
-            const selectedCards = [];
-            for (let j = 0; j < 4; j++) {
-                const randomIndex = Math.floor(Math.random() * availableCards.length);
-                selectedCards.push(availableCards[randomIndex]);
-            }
-            
-            // 1人分の結果表示HTMLを生成
-            const personResultHTML = `
-                <div class="person-result">
-                    <h3>Player ${i + 1}</h3>
-                    <div class="hero-name">${selectedHero}</div>
-                    ${selectedCards.map(card => `<p>${card}</p>`).join('')}
-                </div>
-            `;
-            
-            resultDiv.innerHTML += personResultHTML;
-        }
-    }
-
-    // ========== イベントリスナーと初期化処理 ==========
     roleFilters.forEach(filter => filter.addEventListener('change', updateHeroVisibility));
     startButton.addEventListener('click', runRoulette);
     
-    selectAllHeroesBtn.addEventListener('click', () => {
-        document.querySelectorAll('.hero-checkbox').forEach(checkbox => {
-            checkbox.checked = true;
-        });
-    });
-    deselectAllHeroesBtn.addEventListener('click', () => {
-        document.querySelectorAll('.hero-checkbox').forEach(checkbox => {
-            checkbox.checked = false;
-        });
-    });
+    selectAllHeroesBtn.addEventListener('click', () => document.querySelectorAll('.hero-checkbox').forEach(c => c.checked = true));
+    deselectAllHeroesBtn.addEventListener('click', () => document.querySelectorAll('.hero-checkbox').forEach(c => c.checked = false));
+    selectAllCardsBtn.addEventListener('click', () => document.querySelectorAll('.card-checkbox').forEach(c => c.checked = true));
+    deselectAllCardsBtn.addEventListener('click', () => document.querySelectorAll('.card-checkbox').forEach(c => c.checked = false));
+    selectUrOnlyBtn.addEventListener('click', () => document.querySelectorAll('.card-checkbox').forEach(c => c.checked = !c.value.startsWith('SR')));
+    selectSrOnlyBtn.addEventListener('click', () => document.querySelectorAll('.card-checkbox').forEach(c => c.checked = c.value.startsWith('SR')));
     
     generateHeroCheckboxes();
     generateCardCheckboxes();
    });
-
-
