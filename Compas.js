@@ -97,6 +97,7 @@ document.addEventListener('DOMContentLoaded', () => {
         { name: '上条 当麻', role: 'スプリンター' }, // Collab
         { name: 'ーペルリニエ', role: 'スプリンター' },
         { name: 'シャドウ', role: 'アタッカー' }, // Collab
+        { name: 'ポプ子&ピピ美', role: 'タンク'}, // Collab
     ];
 
     // カードリスト
@@ -317,4 +318,5 @@ document.addEventListener('DOMContentLoaded', () => {
     generateHeroCheckboxes();
     generateCardCheckboxes();
    });
+
 
