@@ -98,6 +98,68 @@ document.addEventListener('DOMContentLoaded', () => {
         { name: 'ーペルリニエ', role: 'スプリンター' },
         { name: 'シャドウ', role: 'アタッカー' }, // Collab
         { name: 'ポプ子&ピピ美', role: 'タンク'}, // Collab
+        { name: 'めるーにゃ   { name: 'ヴィーナス ポロロッチョ', role: 'アタッカー' },
+        { name: 'アクア', role: 'スプリンター' }, // Collab
+        { name: 'めぐみん', role: 'タンク' }, // Collab
+        { name: 'ソーン=ユーリエフ', role: 'ガンナー' },
+        { name: 'リヴァイ', role: 'アタッカー' }, // Collab
+        { name: 'デルミン', role: 'アタッカー' },
+        { name: 'トマス', role: 'タンク' },
+        { name: '猫宮 ひなた', role: 'ガンナー' }, // Collab
+        { name: '岡部 倫太郎', role: 'ガンナー' }, // Collab
+        { name: '零夜', role: 'スプリンター' },
+        { name: 'セイバーオルタ', role: 'アタッカー' }, // Collab
+        { name: 'ギルガメッシュ', role: 'ガンナー' }, // Collab
+        { name: 'ルルカ', role: 'アタッカー' },
+        { name: 'ピエール 77世', role: 'スプリンター' },
+        { name: '佐藤四郎兵衛忠信', role: 'タンク' }, // Collab
+        { name: 'アイズ・ヴァレンシュタイン', role: 'アタッカー' }, // Collab
+        { name: '狐ヶ咲 甘色', role: 'アタッカー' },
+        { name: 'ノクティス', role: 'アタッカー' }, // Collab
+        { name: 'HM-WA100 ニーズヘッグ', role: 'ガンナー' },
+        { name: '中島 敦', role: 'スプリンター' }, // Collab
+        { name: '芥川龍之介', role: 'ガンナー' }, // Collab
+        { name: 'ゲームバズーカガール', role: 'ガンナー' },
+        { name: 'ライザリン・シュタウト', role: 'ガンナー' }, // Collab
+        { name: '青春 アリス', role: 'タンク' }, // Collab
+        { name: 'ジョーカー', role: 'スプリンター' }, // Collab
+        { name: 'イグニス＝ウィル＝ウィスプ', role: 'アタッカー' }, // Collab
+        { name: 'アインズ・ウール・ゴウン', role: 'ガンナー' }, // Collab
+        { name: '糸廻 輪廻', role: 'ガンナー' }, 
+        { name: 'キリト', role: 'アタッカー' }, // Collab
+        { name: 'アスナ', role: 'スプリンター' }, // Collab
+        { name: 'Bugdoll', role: 'ガンナー' },
+        { name: 'ステリア・ララ・シルワ', role: 'アタッカー' },
+        { name: 'ラム', role: 'スプリンター' }, // Collab
+        { name: '2B', role: 'アタッカー' }, // Collab
+        { name: 'ラヴィ・シュシュマルシュ', role: 'タンク' },
+        { name: 'リムル=テンペスト', role: 'アタッカー' }, // Collab
+        { name: 'アル・ダハブ＝アルカティア', role: 'スプリンター' },
+        { name: '御坂 美琴', role: 'アタッカー' }, // Collab
+        { name: 'アクセラレータ', role: 'ガンナー' }, // Collab
+        { name: 'ぶれいずどらごん', role: 'ガンナー' },
+        { name: 'ベル・クラネル', role: 'スプリンター' }, // Collab
+        { name: 'ロキシー・ミグルディア', role: 'ガンナー' }, // Collab
+        { name: '某<なにがし>', role: 'スプリンター' },
+        { name: 'ロックマン.EXE', role: 'ガンナー' }, // Collab
+        { name: 'クー・シー', role: 'アタッカー' },
+        { name: 'デンジ', role: 'アタッカー' }, // Collab
+        { name: 'パワー', role: 'スプリンター' }, // Collab
+        { name: 'アミスター＝バランディン', role: 'タンク' }, 
+        { name: 'シノン', role: 'ガンナー' }, // Collab
+        { name: 'ターニャ・デグレチャフ', role: 'アタッカー' }, // Collab
+        { name: '鬼ヶ式 うら', role: 'タンク' },        
+        { name: 'コラプス', role: 'アタッカー' },
+        { name: 'ボンドルド', role: 'アタッカー' }, // Collab
+        { name: 'みりぽゆ', role: 'ガンナー' }, 
+        { name: 'ゴン＝フリークス', role: 'アタッカー' }, // Collab
+        { name: 'キルア＝ゾルディック', role: 'スプリンター' }, // Collab
+        { name: 'チーちゃん', role: 'スプリンター' },
+        { name: '上条 当麻', role: 'スプリンター' }, // Collab
+        { name: 'ーペルリニエ', role: 'スプリンター' },
+        { name: 'シャドウ', role: 'アタッカー' }, // Collab
+        { name: 'ポプ子&ピピ美', role: 'タンク'}, // Collab
+        { name: 'メールニャ・ランチェルナ', role: 'ガンナー'},
     ];
 
     // カードリスト
@@ -318,5 +380,6 @@ document.addEventListener('DOMContentLoaded', () => {
     generateHeroCheckboxes();
     generateCardCheckboxes();
    });
+
 
 
